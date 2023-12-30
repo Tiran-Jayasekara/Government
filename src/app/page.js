@@ -1,113 +1,178 @@
-import Image from 'next/image'
+"use client";
+import Chat from "@/components/Chat";
+import PageHeader from "@/components/pageHeader";
+import { useState } from "react";
 
 export default function Home() {
+  const [showNewsModal, setNewsShowModal] = useState(false);
+  const [selectNews, setSelectNews] = useState();
+
+  const updates = [
+    {
+      header: "2024 අවුරුදු උත්සවය",
+      location: "Udadumbara Town",
+      image: "https://archives1.sundayobserver.lk/sites/default/files/news/2017/04/05/z_jun-p07-Pillow-fight.jpg",
+      date: "2024.01.02 සිට 2024.01.08 දක්වා ",
+      time: "උදෑසන 8 ටේ සිට සවස 5 දක්වා",
+      company: "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය",
+      description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
+    },
+    {
+      header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
+      location: "Udadumbara School Ground",
+      image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
+      date: "10.12.2023",
+      time: "8am - 5pm",
+      company: "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය",
+      description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
+    },
+    {
+      header: "මත්ද්‍රව්‍ය නිවාරණ වැඩසටහන",
+      location: "Udadumbara School Hall",
+      image: "https://mahamegha.lk/wp-content/uploads/2014/09/mathin-thor.jpg",
+      date: "10.12.2023",
+      time: "8am - 5pm",
+      company: "පොලීසිය",
+      description: "මත්ද්‍රව්‍ය නිවාරණ වැඩසටහන හෙට දිනයේ දී උඩුදුම්බර මධ්‍ය මහා විද්‍යාලීය ශ්‍රවණාගාරයේදී පැවැත්වීමට නියමිත වන බැවින් ඔබ සියලු දෙනාට ඒ සඳහා ආරාධනා කර සිටිමි..මීට පොලිස්පති w රූප සිංහ උඩුදුම්බර පොලිස් ස්ථානය.      ",
+    },
+    {
+      header: "විදුලි කප්පාදුවක්",
+      location: "Udadumbara , Gangoda , Kalunthanna , Bopana  ",
+      image: "https://www.news.lk/media/k2/items/cache/ec907760afc6b04bf7f5a9519b72f55f_XL.jpg",
+      date: "10.12.2023",
+      time: "8am - 5pm",
+      company: "විදුලි බල මණ්ඩලය",
+      description: "ෙට දිනයේදී උඩ දුම්බර නගරය ඇතුළු ගංගොඩ කලුන්තැන්න මඩුගල්ල ආදී සියලු ප්‍රදේශවලට විදුලිය ඇනහිටීමක් සිදුවන බව කරුණාවෙන් දන්වා සිටිමි. අලුත්වැඩියා කටයුත්තක් හේතුවෙන් මෙම විදුලිය විසන්ධි කිරීමට සිදුවන බව කරුණාවෙන් දන්වා සිටිමි      ",
+    }
+  ];
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <>
+      <div className="flex flex-wrap md:mt-0 mt-6 w-full mx-auto justify-center  ">
+        <PageHeader
+          topic="Home"
+          header="Well Come To Udududmbara"
+          description="The Best Place to Check Availability of Government and Other Services."
         />
+
+        <div className="w-full">
+          <img
+            src="https://mediaim.expedia.com/localexpert/886633/ed6f4a03-bd57-4a58-b33e-5cf7a0a582dd.jpg?impolicy=resizecrop&rw=1005&rh=565"
+            alt="card-image"
+            className="w-full  mt-2 md:h-screen h-60"
+          />
+        </div>
+
+
+        {/* News & Events */}
+        <div className=" flex flex-wrap text-2xl mt-10 md:ml-10 ml-4 w-full font-semibold">
+          <h1>News & Events</h1>
+        </div>
+        {updates.map((data, index) => (
+          <div
+            key={index}
+            className="relative flex flex-col md:mt-6 mt-10 text-gray-700 bg-opacity-30 bg-white shadow-md bg-clip-border rounded-xl w-96 m-4 hover:scale-105 cursor-pointer"
+            onClick={() => {
+              setSelectNews(data);
+              setNewsShowModal(true);
+            }}
+          >
+            <div className="relative h-56 mx-4 overflow-hidden text-white  rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
+              <img src={data.image} alt="" className="object-cover w-full md:h-56 mt-2 rounded-xl" />
+              <span className="absolute top-0 left-0 px-2 py-1 mt-4 ml-2 text-xs text-white bg-blue-700">
+                {data.company}
+              </span>
+            </div>
+
+            <div className="px-4 py-4 lg:px-2">
+              {/* <a href="#" className="text-sm font-medium text-gray-600">
+                {data.date}
+              </a> */}
+              <div className="w-8 pb-1 mb-4 border-b border-gray-600"></div>
+              <h2 className="mt-2 mb-4 text-xl font-semibold text-gray-600">{data.header}</h2>
+              <p className={`mb-4 text-sm text-gray-500 dark:text-gray-400 ${true ? 'line-clamp-4' : ''}`}>
+                <b className=''>දිනය : </b>{data.date}<br></br>
+                <b className=''>වේලාව : </b>{data.time}<br></br>
+                <b className=''>ස්ථානය : </b>{data.location}<br></br><br></br>
+                {data.description}
+              </p>
+
+
+            </div>
+
+            <div className="p-4 pt-0">
+              <button
+                className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                type="button"
+              >
+                වැඩි විස්තර
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      {/* setNewsShowModal Section */}
+      {showNewsModal ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-4">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+
+                <div className="flex items-center justify-between p-5 w-full">
+                  <span className="absolute md:flex hidden md:w-auto -mt-56 mx-auto ml-4 md:h-auto justify-start items-start text-xs p-2 text-white bg-blue-700">
+                    {selectNews.company}</span>
+                  <h3 className="md:text-2xl text-sm font-semibold justify-center items-center md:ml-10 md:mt-0 mt-8">
+                    {selectNews.header}
+                  </h3>
+                  <div className="md:flex flex-wrap w-full items-center justify-center hidden">
+                    <img src={selectNews.image} alt="card-image" className="md:w-96 mt-4 md:h-auto md:rounded-2xl justify-center items-center " />
+
+                  </div>
+                </div>
+                <div className=" md:hidden flex flex-wrap w-full items-center justify-center">
+                  <img src={selectNews.image} alt="card-image" className="md:w-96 w-80 h-auto rounded-xl mt-4 md:h-auto ml-6 mr-6 md:rounded-2xl justify-center items-center " />
+                  <span className="absolute top-0 left-0 px-2 py-1 mt-2 ml-2 text-xs text-white bg-blue-700">
+                    {selectNews.company}</span>
+                </div>
+                {/*body*/}
+                <div className="relative p-6 flex-auto">
+                  <p>
+                    <b>දිනය : </b>{selectNews.date}<br></br>
+                    <b>වේලාව : </b>{selectNews.time}<br></br>
+                    <b>ස්ථානය : </b>{selectNews.location}
+                  </p>
+                  <p className="my-4 text-blueGray-500 md:text-xl text-sm leading-relaxed text-justify">
+                    <b>විස්තරය : </b>{selectNews.description}
+                  </p>
+                </div>
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6">
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setNewsShowModal(false)}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setNewsShowModal(false)}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
+    </>
+  );
 }
