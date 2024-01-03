@@ -1,11 +1,26 @@
 "use client";
-import Chat from "@/components/Chat";
 import PageHeader from "@/components/pageHeader";
-import { useState } from "react";
+import newsService from "@/service/newsService";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [showNewsModal, setNewsShowModal] = useState(false);
   const [selectNews, setSelectNews] = useState();
+  const { getAllNews } = newsService();
+
+  const [news, setNews] = useState();
+
+
+  useEffect(() => {
+    getAllNewsData();
+  }, [])
+
+  const getAllNewsData = async () => {
+    const newsData = await getAllNews();
+    if (newsData) {
+      setNews(newsData.data.allNews);
+    }
+  }
 
   const updates = [
     {
@@ -45,6 +60,7 @@ export default function Home() {
       description: "ෙට දිනයේදී උඩ දුම්බර නගරය ඇතුළු ගංගොඩ කලුන්තැන්න මඩුගල්ල ආදී සියලු ප්‍රදේශවලට විදුලිය ඇනහිටීමක් සිදුවන බව කරුණාවෙන් දන්වා සිටිමි. අලුත්වැඩියා කටයුත්තක් හේතුවෙන් මෙම විදුලිය විසන්ධි කිරීමට සිදුවන බව කරුණාවෙන් දන්වා සිටිමි      ",
     }
   ];
+
   return (
     <>
       <div className="flex flex-wrap md:mt-0 mt-6 w-full mx-auto justify-center  ">
@@ -67,19 +83,16 @@ export default function Home() {
         <div className=" flex flex-wrap text-2xl mt-10 md:ml-10 ml-4 w-full font-semibold">
           <h1>News & Events</h1>
         </div>
-        {updates.map((data, index) => (
+        {news ? news.map((data, index) => (
           <div
             key={index}
             className="relative flex flex-col md:mt-6 mt-10 text-gray-700 bg-opacity-30 bg-white shadow-md bg-clip-border rounded-xl w-96 m-4 hover:scale-105 cursor-pointer"
-            onClick={() => {
-              setSelectNews(data);
-              setNewsShowModal(true);
-            }}
+
           >
             <div className="relative h-56 mx-4 overflow-hidden text-white  rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
               <img src={data.image} alt="" className="object-cover w-full md:h-56 mt-2 rounded-xl" />
               <span className="absolute top-0 left-0 px-2 py-1 mt-4 ml-2 text-xs text-white bg-blue-700">
-                {data.company}
+                {data.company === "localCouncil" ? "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය" : data.company === "police" ? "පොලීසිය" : null}
               </span>
             </div>
 
@@ -95,20 +108,22 @@ export default function Home() {
                 <b className=''>ස්ථානය : </b>{data.location}<br></br><br></br>
                 {data.description}
               </p>
-
-
             </div>
 
             <div className="p-4 pt-0">
               <button
                 className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                 type="button"
+                onClick={() => {
+                  setSelectNews(data);
+                  setNewsShowModal(true);
+                }}
               >
                 වැඩි විස්තර
               </button>
             </div>
           </div>
-        ))}
+        )) : "No News"}
       </div>
 
 
@@ -125,7 +140,7 @@ export default function Home() {
 
                 <div className="flex items-center justify-between p-5 w-full">
                   <span className="absolute md:flex hidden md:w-auto -mt-56 mx-auto ml-4 md:h-auto justify-start items-start text-xs p-2 text-white bg-blue-700">
-                    {selectNews.company}</span>
+                    {selectNews.company === "localCouncil" ? "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය" : selectNews.company === "police" ? "පොලීසිය" : null}</span>
                   <h3 className="md:text-2xl text-sm font-semibold justify-center items-center md:ml-10 md:mt-0 mt-8">
                     {selectNews.header}
                   </h3>

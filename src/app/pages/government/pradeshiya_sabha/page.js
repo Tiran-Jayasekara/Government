@@ -1,10 +1,11 @@
 "use client"
-import Chat from '@/components/Chat';
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/pageHeader';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { adminAddNewsformControls } from '@/components/utils';
 import { GlobalContext } from '@/context';
+import AdminService from '@/service/adminService';
+import newsService from '@/service/newsService';
 
 const PradeshiyaSabhawa = ({ role }) => {
   const [showModal, setShowModal] = useState(false);
@@ -16,96 +17,102 @@ const PradeshiyaSabhawa = ({ role }) => {
   const [selectedNews, setSelecteNews] = useState();
   const [selectedService, setSelecteService] = useState();
 
-  const {admin , setAdmin , availability} = useContext(GlobalContext);
+  const { admin, setAdmin, availability } = useContext(GlobalContext);
+  const { getAdmin } = AdminService();
+  const { getNewsByCompany, addNewNews, deleteNews, UpdateNews } = newsService();
+
+  const [adminCompany, setAdminCompany] = useState("localCouncil")
+  const [HeadsOfInstitutions, setHeadsOfInstitutions] = useState();
+  const [PradeshiyaSabhaNews, setPradeshiyaSabhaNews] = useState();
 
 
-  const UpdateNews = () => {
-    console.log(selectedNews);
-    setShowNewsModal(false)
-    alert("Update Success");
+  const updateNews = async () => {
+    const updateNewsData = await UpdateNews(selectedNews);
+    if (updateNewsData) {
+      getLocalCouncilNews();
+      setShowNewsModal(false)
+      alert(updateNewsData.data.message)
+
+    } else {
+      alert("Update Unsuccess")
+    }
+
+
 
   }
 
-  const AddNews = () => {
-    alert("Add News")
-    console.log(addNews);
-    setAddNewsModal(false);
+  const AddNews = async () => {
+    const addNesNewsData = await addNewNews(addNews)
+    if (addNesNewsData) {
+      setAddNewsModal(false);
+      alert(addNesNewsData.data.message)
+      getLocalCouncilNews();
+    } else {
+      alert("Add News Unsuccess")
+    }
+
+    // setAddNewsModal(false);
   }
 
-  const DeleteNews = () => {
-    alert("Deleted News")
+  const DeleteNews = async (e) => {
+    const deleteNewsStatus = await deleteNews(e)
+    if (deleteNewsStatus) {
+      alert(deleteNewsStatus.data.message)
+      getLocalCouncilNews();
+    } else {
+      alert("News Delete Unsuccess")
+    }
+  }
+
+  useEffect(() => {
+    getLocalCouncilNews();
+    getAdminDetails();
+  }, [])
+
+  const getAdminDetails = async () => {
+    const HeadsOfInstitutions = await getAdmin(adminCompany);
+    setHeadsOfInstitutions(HeadsOfInstitutions ? HeadsOfInstitutions.data.AdminByCompany : null)
+  }
+
+  const getLocalCouncilNews = async () => {
+    const newsData = await getNewsByCompany(adminCompany);
+    setPradeshiyaSabhaNews(newsData ? newsData.data.NewsByCompany : null);
   }
 
 
-  const HeadsOfInstitutions = [{
-    name: "Tiran",
-    userName: "",
-    Password: "",
-    mobile: "0714055143",
-    role: "සභාපති",
-    status: availability,
-    company: "",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmodtempor incididunt utlabore et dolore magna aliqua. Ut enim ad minim veniam",
-  },
-  {
-    name: "Jayasekara",
-    mobile: "0757026373",
-    role: "ලේකම්",
-    status: false,
-    company: "",
-    description: "",
-  },
-  {
-    name: "Tiran",
-    mobile: "0714055143",
-    role: "සභාපති",
-    status: true,
-    company: "",
-    description: "",
-  },
-  {
-    name: "Jayasekara",
-    mobile: "0757026373",
-    role: "ලේකම්",
-    status: false,
-    company: "",
-    description: "",
-  },
-  ]
-
-  const PradeshiyaSabhaNews = [{
-    header: "2024 අවුරුදු උත්සවය",
-    location: "උඩුදුම්බර පාසල් ක්‍රීඩාංගණයේදී",
-    image: "https://archives1.sundayobserver.lk/sites/default/files/news/2017/04/05/z_jun-p07-Pillow-fight.jpg",
-    date: "2024.04.12",
-    time: "උදෑසන 8 ටේ සිට සවස 5 දක්වා",
-    description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි   ",
-  },
-  {
-    header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
-    location: "Udadumbara School Ground",
-    image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
-    date: "10.12.2023",
-    time: "8am - 5pm",
-    description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
-  },
-  {
-    header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
-    location: "Udadumbara School Ground",
-    image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
-    date: "10.12.2023",
-    time: "8am - 5pm",
-    description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
-  },
-  {
-    header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
-    location: "Udadumbara School Ground",
-    image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
-    date: "10.12.2023",
-    time: "8am - 5pm",
-    description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
-  }
-  ]
+  // const PradeshiyaSabhaNews = [{
+  //   header: "2024 අවුරුදු උත්සවය",
+  //   location: "උඩුදුම්බර පාසල් ක්‍රීඩාංගණයේදී",
+  //   image: "https://archives1.sundayobserver.lk/sites/default/files/news/2017/04/05/z_jun-p07-Pillow-fight.jpg",
+  //   date: "2024.04.12",
+  //   time: "උදෑසන 8 ටේ සිට සවස 5 දක්වා",
+  //   description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි   ",
+  // },
+  // {
+  //   header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
+  //   location: "Udadumbara School Ground",
+  //   image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
+  //   date: "10.12.2023",
+  //   time: "8am - 5pm",
+  //   description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
+  // },
+  // {
+  //   header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
+  //   location: "Udadumbara School Ground",
+  //   image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
+  //   date: "10.12.2023",
+  //   time: "8am - 5pm",
+  //   description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
+  // },
+  // {
+  //   header: "තරුන සේවා වොලිබෝල් තරගාවලිය",
+  //   location: "Udadumbara School Ground",
+  //   image: "https://ncas.org.au/wp-content/uploads/2021/05/miguel-teirlinck-VDkRsT649C0-unsplash-2048x1365.jpg",
+  //   date: "10.12.2023",
+  //   time: "8am - 5pm",
+  //   description: "හෙට දිනයේදී මෙම ප්‍රදේශය  2024 අවුරුදු උත්සවය බව කරුණාවෙන් දන්වා සිටිමි",
+  // }
+  // ]
 
   const PradeshiyaSabhaServices = [{
     header: "උප්පැන්න සහතික ලබා ගැනීම",
@@ -132,8 +139,6 @@ const PradeshiyaSabhawa = ({ role }) => {
     description: "උප්පැන්න සහතික ලබා ගැනීම සඳහා ඔබගේ ජාතික හැඳුනුම්පත හෝ තැපැල් හැඳුනුම්පත සමග පැමිණිය යුතුයි.උප්පැන්න සහතික ලබා ගැනීම සඳහා ඔබගේ ජාතික හැඳුනුම්පත හෝ තැපැල් හැඳුනුම්පත සමග පැමිණිය යුතුයි"
   }
   ]
-
-  const NewsHederList = ['header', 'location', 'image', 'date', 'time', 'description']
 
   return (
     <>
@@ -280,7 +285,7 @@ const PradeshiyaSabhawa = ({ role }) => {
           </div>
         </div>
         <div className='w-full flex flex-wrap  justify-center md:mx-20'>
-          {admin === "PradeshiyaSabha_admin" ? <button
+          {admin === "localCouncil_editor" ? <button
             className="bg-emerald-500 w-full md:mx-60 mx-10 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
             type="button"
             onClick={() => {
@@ -293,10 +298,9 @@ const PradeshiyaSabhawa = ({ role }) => {
 
 
 
-          {PradeshiyaSabhaNews.map((data, index) => (
+          {PradeshiyaSabhaNews ? PradeshiyaSabhaNews.map((data, index) => (
             <div
-              key={index}
-
+              key={data._id}
               className=" bg-opacity-30 relative flex flex-col md:mt-6 mt-0 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 m-4 hover:shadow-lg  hover:transform hover:scale-105  cursor-pointer"
 
             >
@@ -319,7 +323,7 @@ const PradeshiyaSabhawa = ({ role }) => {
 
               </div>
               <div className="p-4 pt-0">
-                {admin === "PradeshiyaSabha_admin" ? <div className='flex flex-row justify-between'><button
+                {admin === "localCouncil_editor" ? <div className='flex flex-row justify-between'><button
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
                   onClick={() => {
@@ -332,7 +336,7 @@ const PradeshiyaSabhawa = ({ role }) => {
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-red-700 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
                   onClick={() => {
-                    DeleteNews();
+                    DeleteNews(data._id);
                   }}
                 >
                     Delete
@@ -350,7 +354,7 @@ const PradeshiyaSabhawa = ({ role }) => {
 
               </div>
             </div>
-          ))}
+          )) : "No News"}
         </div>
 
 
@@ -367,7 +371,7 @@ const PradeshiyaSabhawa = ({ role }) => {
 
           <div className="flow-root ">
             <ul role="list" className="divide-y  ">
-              {HeadsOfInstitutions.map((user, index) => (
+              {HeadsOfInstitutions ? HeadsOfInstitutions.map((user, index) => (
 
                 <li key={index} className="py-3 sm:py-4 cursor-pointer" onClick={() => {
                   setSelectedUserData(user)
@@ -395,7 +399,7 @@ const PradeshiyaSabhawa = ({ role }) => {
                     </div>
                   </div>
                 </li>
-              ))}
+              )) : "No data"}
             </ul>
           </div>
         </div>
@@ -462,12 +466,12 @@ const PradeshiyaSabhawa = ({ role }) => {
       {/* This modal For News */}
       {showNewsModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-4">
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none m-4 md:mx-40">
             <div className="relative w-auto my-6 mx-auto ">
               {/*content*/}
               <div className="w-full border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                 {/*header*/}
-                {admin === "PradeshiyaSabha_admin" ? <section className="w-full h-auto">
+                {admin === "localCouncil_editor" ? <section className="w-full h-auto">
                   <div className="px-4 mx-auto ">
                     <div className="p-8 px-4 bg-white">
                       <div className="md:mt-40">
@@ -546,11 +550,11 @@ const PradeshiyaSabhawa = ({ role }) => {
                   >
                     Close
                   </button>
-                  {admin === "PradeshiyaSabha_admin" ? <button
+                  {admin === "localCouncil_editor" ? <button
                     className="bg-emerald-500 mr-4 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                     type="button"
                     onClick={() => {
-                      UpdateNews()
+                      updateNews()
                     }
                     }
                   >
@@ -582,13 +586,13 @@ const PradeshiyaSabhawa = ({ role }) => {
               {/*content*/}
               <div className="w-full border-0 rounded-lg shadow-lg relative flex flex-col bg-white outline-none focus:outline-none">
                 {/*header*/}
-                {admin === "PradeshiyaSabha_admin" ? <section className="w-full h-auto">
+                {admin === "localCouncil_editor" ? <section className="w-full h-auto">
                   <div className="px-4 mx-auto ">
                     <div className="p-8 px-4 bg-white">
                       <div className="md:mt-0">
                         <div>
 
-                          {adminAddNewsformControls.map((controlItem, index) => (
+                          {adminAddNewsformControls ? adminAddNewsformControls.map((controlItem, index) => (
                             <div className="px-4 mb-6" key={controlItem.id}>
                               <label className="block mb-2 text-sm font-medium">{controlItem.label}</label>
 
@@ -601,6 +605,7 @@ const PradeshiyaSabhawa = ({ role }) => {
                                     setAddNews({
                                       ...addNews,
                                       [controlItem.id]: event.target.value,
+                                      company: adminCompany
                                     })
                                   }}
                                 />
@@ -614,12 +619,13 @@ const PradeshiyaSabhawa = ({ role }) => {
                                     setAddNews({
                                       ...addNews,
                                       [controlItem.id]: event.target.value,
+                                      company: adminCompany
                                     })
                                   }}
                                 />
                               )}
                             </div>
-                          ))}
+                          )) : null}
                         </div>
                       </div>
                     </div>

@@ -21,76 +21,8 @@ export const navOptions = [
     },
   ];
   
-  export const adminNavOptions = [
-    {
-      id: "adminListing",
-      label: "Manage All Products",
-      path: "/admin-view/all-products",
-    },
-    {
-      id: "adminNewProduct",
-      label: "Add New Product",
-      path: "/admin-view/add-product",
-    },
-  ];
   
-  export const registrationFormControls = [
-    {
-      id: "name",
-      type: "text",
-      placeholder: "Enter your name",
-      label: "Name",
-      componentType: "input",
-    },
-    {
-      id: "email",
-      type: "email",
-      placeholder: "Enter your email",
-      label: "Email",
-      componentType: "input",
-    },
-    {
-      id: "password",
-      type: "password",
-      placeholder: "Enter your password",
-      label: "Password",
-      componentType: "input",
-    },
-    {
-      id: "role",
-      type: "",
-      placeholder: "",
-      label: "Role",
-      componentType: "select",
-      options: [
-        {
-          id: "admin",
-          label: "Admin",
-        },
-        {
-          id: "customer",
-          label: "customer",
-        },
-      ],
-    },
-  ];
-  
-  export const loginFormControls = [
-    {
-      id: "email",
-      type: "email",
-      placeholder: "Enter your email",
-      label: "Email",
-      componentType: "input",
-    },
-    {
-      id: "password",
-      type: "password",
-      placeholder: "Enter your password",
-      label: "Password",
-      componentType: "input",
-    },
-  ];
+
   
   export const adminAddNewsformControls = [
     {
@@ -99,6 +31,22 @@ export const navOptions = [
       placeholder: "Enter Header",
       value:"header",
       label: "Header",
+      componentType: "input",
+    },
+    {
+      id: "location",
+      type: "text",
+      placeholder: "Enter Location",
+      value:"location",
+      label: "Location",
+      componentType: "input",
+    },
+    {
+      id: "image",
+      type: "text",
+      placeholder: "Enter Image URL",
+      value:"image",
+      label: "Image",
       componentType: "input",
     },
     {
@@ -118,14 +66,6 @@ export const navOptions = [
       componentType: "input",
     },
     {
-      id: "location",
-      type: "text",
-      placeholder: "Enter Location",
-      value:"location",
-      label: "Location",
-      componentType: "input",
-    },
-    {
       id: "description",
       type: "text",
       placeholder: "Enter Description",
@@ -135,69 +75,39 @@ export const navOptions = [
     },
   ];
   
-  export const AvailableSizes = [
+
+  export const governmentData = [
     {
-      id: "s",
-      label: "S",
+      img: "/assests/pradeshiyaSabha.jpg",
+      name: "ප්‍රාදේශීය සභාව",
+      status: true,
+      description:
+        "Enter a freshly updated and thoughtfully furnished peaceful home surrounded by ancient trees, stone walls, and open meadows.",
+      path:"/pages/government/pradeshiya_sabha"
     },
     {
-      id: "m",
-      label: "M",
+      img: "https://island.lk/wp-content/uploads/2021/10/ceb.jpg",
+      name: "විදුලි බල මණ්ඩලය ",
+      status: false,
+      description:
+        "Enter a freshly updated and thoughtfully furnished peaceful home surrounded by ancient trees, stone walls, and open meadows.",
+      path:"/pages/government/ceb"
+    },
+
+    {
+      img: "/assests/hospital.jpg",
+      name: "රෝහල",
+      status: true,
+      description:
+        "Enter a freshly updated and thoughtfully furnished peaceful home surrounded by ancient trees, stone walls, and open meadows.",
+      path:"/pages/government/hospital"
     },
     {
-      id: "l",
-      label: "L",
-    },
-  ];
-  
- 
-  export const firebaseConfig = {
-    apiKey: "AIzaSyAtjTJwQOvH53SsdsY6dSnCJ-7NVxj-ZFM",
-    authDomain: "peerwave-mobileshop.firebaseapp.com",
-    projectId: "peerwave-mobileshop",
-    storageBucket: "peerwave-mobileshop.appspot.com",
-    messagingSenderId: "546197404094",
-    appId: "1:546197404094:web:1c145883477140a2b2a1ef",
-    measurementId: "G-D9B14W5Q69"
-  };
-  
-  export const firebaseStroageURL =
-    "gs://peerwave-mobileshop.appspot.com";
-  
-  export const addNewAddressFormControls = [
-    {
-      id: "fullName",
-      type: "input",
-      placeholder: "Enter your full name",
-      label: "Full Name",
-      componentType: "input",
-    },
-    {
-      id: "address",
-      type: "input",
-      placeholder: "Enter your full address",
-      label: "Address",
-      componentType: "input",
-    },
-    {
-      id: "city",
-      type: "input",
-      placeholder: "Enter your city",
-      label: "City",
-      componentType: "input",
-    },
-    {
-      id: "country",
-      type: "input",
-      placeholder: "Enter your country",
-      label: "Country",
-      componentType: "input",
-    },
-    {
-      id: "postalCode",
-      type: "input",
-      placeholder: "Enter your postal code",
-      label: "Postal Code",
-      componentType: "input",
+      img: "/assests/police.jpg",
+      name: "පොලීසිය",
+      status: false,
+      description:
+        "Enter a freshly updated and thoughtfully furnished peaceful home surrounded by ancient trees, stone walls, and open meadows.",
+      path:"/pages/government/police"
     },
   ];

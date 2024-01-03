@@ -3,26 +3,43 @@ import React, { useContext, useState } from 'react'
 import { GlobalContext } from '@/context'
 import { usePathname, useRouter } from "next/navigation";
 import AlertMessage from '@/components/AlertMessage';
+import AdminService from '@/service/adminService';
+import Cookies from "js-cookie";
+
 
 const Login = () => {
 
 
-    const [formData, setFormData] = useState({ userName: "", passWord: "" })
+    const [formData, setFormData] = useState({ email: "", password: "" })
+    const { Login } = AdminService();
+    const { admin, setAdmin, adminDetails, setAdminDetails, setToken } = useContext(GlobalContext);
+    const router = useRouter();
 
-    const Navigate = () => {
-        if (formData.userName === "admin" && formData.passWord === "admin") {
-            <AlertMessage description={"Login Success"}/>
-            setAdmin("PradeshiyaSabha_admin")
-            router.push("/pages/government/pradeshiya_sabha")
-        } else if(formData.userName === "Padmin" && formData.passWord === "Padmin" ) {
-            router.push("/Profile")
-        }else{
 
+    const Navigate = async () => {
+        const adminData = await Login(formData);
+        if (adminData ? adminData.data.message == "Login Success" : null) {
+            setAdminDetails(adminData?.data?.checkAdmin);
+            Cookies.set("token", adminData?.data?.token);
+            setToken(adminData?.data?.token);
+            localStorage.setItem("admin", JSON.stringify(adminData?.data?.checkAdmin));
+
+
+            if (adminData?.data?.checkAdmin?.company === "localCouncil" && adminData?.data?.checkAdmin?.role === "editor") {
+                setAdmin("localCouncil_editor")
+                router.push("/pages/government/pradeshiya_sabha")
+            } else if (adminData?.data?.checkAdmin?.company === "localCouncil") {
+                router.push("/Profile")
+            }
+        } else {
+            alert(adminData ? adminData.data.message : null)
         }
 
+
     }
-    const { admin, setAdmin } = useContext(GlobalContext);
-    const router = useRouter();
+
+
+
     return (
         <section className="w-full flex items-center justify-center h-screen font-poppins bg-gradient-to-r from-blue-200  to-green-200">
             <div className="flex-1">
@@ -41,16 +58,17 @@ const Login = () => {
                                 <h2 className="mb-4 text-2xl font-bold text-gray-700 lg:mb-7 md:text-5xl ">
                                     Login your account</h2>
                                 <p className="text-gray-500 ">Your credentials here</p>
-                                <form action="" className="mt-4 lg:mt-7 ">
+                                <div className="mt-4 lg:mt-7 ">
                                     <div className="">
                                         <input type="email"
                                             className="w-full px-4 py-3 mt-2 bg-white rounded-lg lg:py-5"
                                             name="" placeholder="Enter your email" onChange={(event) => {
                                                 setFormData({
                                                     ...formData,
-                                                    userName: event.target.value,
+                                                    email: event.target.value,
                                                 })
-                                            }} />
+                                            }}
+                                        />
                                     </div>
                                     <div className="mt-4 lg:mt-7">
                                         <div>
@@ -60,7 +78,7 @@ const Login = () => {
                                                     name="" placeholder="Enter password" onChange={(event) => {
                                                         setFormData({
                                                             ...formData,
-                                                            passWord: event.target.value,
+                                                            password: event.target.value,
                                                         })
                                                     }} />
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -87,7 +105,6 @@ const Login = () => {
                                     </div>
                                     <button
                                         className="w-full py-3 text-lg font-bold text-gray-300 uppercase bg-blue-700 rounded-md lg:mt-7 mt-7  px-11 md:mt-7 hover:bg-blue-900 "
-                                        type="submit"
                                         onClick={() =>
                                             Navigate()
                                         }
@@ -97,7 +114,7 @@ const Login = () => {
                                         <a href="#" onClick={() => { setAdmin('P') }} className="font-semibold text-blue-400 hover:text-blue-600">
                                             Create an account</a>
                                     </p>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
