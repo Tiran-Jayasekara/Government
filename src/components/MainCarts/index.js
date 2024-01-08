@@ -1,17 +1,19 @@
 import React from 'react'
 import { usePathname, useRouter } from "next/navigation";
+import PageLoader from 'next/dist/client/page-loader';
+import PageLoadning from '../PageLoading';
 
 
-const MainCarts = ({governmentData}) => {
+const MainCarts = ({ governmentData }) => {
     const router = useRouter();
     return (
         <>
-            {governmentData.map((data, index) => (
+            {governmentData ? governmentData.map((data, index) => (
                 <div
                     key={index}
                     className="relative flex flex-col md:mt-6 mt-10 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 m-4 hover:shadow-lg hover:bg-gray-100 hover:transform hover:scale-105 transition-all duration-300 cursor-pointer"
                     onClick={() => {
-                        router.push(data.path);
+                        router.push(`/pages/government/${data.company}`);
                     }}
                 >
                     <div className="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
@@ -28,7 +30,7 @@ const MainCarts = ({governmentData}) => {
                                 {data.name}
                             </h5>
                             <div className="flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
-                                <div style={{ color: data.status ? "green" : "red" }}>
+                                <div style={{ color: data.status ? "green" : "red" }} className='text-xl'>
                                     {data.status ? "Open" : "Close"}
                                 </div>
                             </div>
@@ -47,7 +49,8 @@ const MainCarts = ({governmentData}) => {
                         </button>
                     </div>
                 </div>
-            ))}
+            )) :
+                <PageLoadning/> }
         </>
     )
 }

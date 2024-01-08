@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import NavBar from '@/components/NavBar'
 import GlobalState from '@/context'
+import Toast from '@/components/ToastMessage'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
         </GlobalState>
+        <Toast/>
       </body>
     </html>
   )

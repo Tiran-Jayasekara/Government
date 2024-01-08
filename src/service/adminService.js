@@ -8,7 +8,7 @@ const AdminService = () => {
     const { token } = useContext(GlobalContext)
 
     const http = axios.create({
-        baseURL: "http://localhost:3001",
+        baseURL: "http://192.168.1.185:3001",
         // process.env.REACT_APP_BASE_URL,
 
         headers: {
@@ -56,6 +56,19 @@ const AdminService = () => {
         }
     }
 
+    const UpdateAdminStatus = async (adminStatusForm) => {
+        try {
+            const admin = await http.put("/admin/updateAdminStatus", adminStatusForm);
+            if (admin) {
+                return admin;
+            } else {
+
+            }
+        } catch (error) {
+
+        }
+    }
+
 
 
 
@@ -64,7 +77,8 @@ const AdminService = () => {
     return {
         Login,
         UpdateAdmin,
-        getAdmin
+        getAdmin,
+        UpdateAdminStatus
     }
 }
 

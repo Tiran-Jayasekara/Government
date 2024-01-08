@@ -1,11 +1,28 @@
 "use client";
 import PageHeader from "@/components/pageHeader";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { governmentData } from "../../../components/utils"
 import MainCarts from "@/components/MainCarts";
+import CompanyService from "@/service/companyService";
 
 const Government = () => {
+
+  const { getAllCompany } = CompanyService();
+  const [governmentData , setGovernmentData] = useState();
+
+  useEffect(() => {
+    getAllCompanies();
+  },[])
+
+  const getAllCompanies = async () => {
+    console.log("getAllCompanies");
+    const AllCompanyCardData = await getAllCompany();
+    if (AllCompanyCardData) {
+      setGovernmentData(AllCompanyCardData.data.constallCompanies)
+    } else {
+      console.log("No Data");
+    }
+  }
 
   return (
     <>
@@ -15,7 +32,7 @@ const Government = () => {
           header="Well Come To Udududmbara"
           description="The Best Place to Check Availability of Government and Other Services."
         />
-        <MainCarts governmentData={governmentData}/>
+        <MainCarts governmentData={governmentData} />
       </div>
     </>
   );

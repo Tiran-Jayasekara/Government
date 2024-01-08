@@ -1,12 +1,18 @@
 "use client";
+import Footer from "@/components/Footer";
+import PageLoadning from "@/components/PageLoading";
 import PageHeader from "@/components/pageHeader";
 import newsService from "@/service/newsService";
 import { useEffect, useState } from "react";
+import { CompanyName } from '@/components/utils';
+import Map from "@/components/Map";
+
 
 export default function Home() {
   const [showNewsModal, setNewsShowModal] = useState(false);
   const [selectNews, setSelectNews] = useState();
   const { getAllNews } = newsService();
+
 
   const [news, setNews] = useState();
 
@@ -63,7 +69,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-wrap md:mt-0 mt-6 w-full mx-auto justify-center  ">
+      <div className="flex flex-wrap md:mt-0 mt-6 w-full mx-auto justify-center mb-20 bg-gradient-to-br from-white to-white " style={{
+        backgroundImage: "url('')", // Replace with your actual image URL
+      }}>
         <PageHeader
           topic="Home"
           header="Well Come To Udududmbara"
@@ -72,7 +80,7 @@ export default function Home() {
 
         <div className="w-full">
           <img
-            src="https://mediaim.expedia.com/localexpert/886633/ed6f4a03-bd57-4a58-b33e-5cf7a0a582dd.jpg?impolicy=resizecrop&rw=1005&rh=565"
+            src="https://i.pinimg.com/originals/a8/26/7e/a8267e19e5adcbda3c3125d59a826a79.jpg"
             alt="card-image"
             className="w-full  mt-2 md:h-screen h-60"
           />
@@ -92,7 +100,10 @@ export default function Home() {
             <div className="relative h-56 mx-4 overflow-hidden text-white  rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
               <img src={data.image} alt="" className="object-cover w-full md:h-56 mt-2 rounded-xl" />
               <span className="absolute top-0 left-0 px-2 py-1 mt-4 ml-2 text-xs text-white bg-blue-700">
-                {data.company === "localCouncil" ? "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය" : data.company === "police" ? "පොලීසිය" : null}
+                {CompanyName ? CompanyName.map((event) => (
+                  data.company ? data.company === event.english ? event.sinhala : null : null
+                )) : null}
+
               </span>
             </div>
 
@@ -112,7 +123,7 @@ export default function Home() {
 
             <div className="p-4 pt-0">
               <button
-                className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+                className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-blue-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                 type="button"
                 onClick={() => {
                   setSelectNews(data);
@@ -123,7 +134,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-        )) : "No News"}
+        )) : <PageLoadning />}
       </div>
 
 
@@ -140,7 +151,7 @@ export default function Home() {
 
                 <div className="flex items-center justify-between p-5 w-full">
                   <span className="absolute md:flex hidden md:w-auto -mt-56 mx-auto ml-4 md:h-auto justify-start items-start text-xs p-2 text-white bg-blue-700">
-                    {selectNews.company === "localCouncil" ? "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය" : selectNews.company === "police" ? "පොලීසිය" : null}</span>
+                    {selectNews.company === "localCouncil" ? "ප්‍රාදේශීය මහ ලේකම් කාර්යාලය" : selectNews.company === "police" ? "පොලීසිය" : selectNews.company === "electricity" ? "විදුලි බල මණ්ඩලය" : null}</span>
                   <h3 className="md:text-2xl text-sm font-semibold justify-center items-center md:ml-10 md:mt-0 mt-8">
                     {selectNews.header}
                   </h3>
@@ -188,6 +199,9 @@ export default function Home() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+
+      <Footer />
+      <Map/>
     </>
   );
 }

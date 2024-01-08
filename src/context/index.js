@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 export const GlobalContext = createContext(null);
 
 const GlobalState = ({ children }) => {
-  const [admin, setAdmin] = useState();
+  const [admin, setAdmin] = useState("localCouncil_editor");
   const [availability, setAvailability] = useState(false);
   const [adminDetails, setAdminDetails] = useState();
   const [token, setToken] = useState();
@@ -14,9 +14,9 @@ const GlobalState = ({ children }) => {
   useEffect(() => {
     if (Cookies.get("token") !== undefined) {
       const adminData = JSON.parse(localStorage.getItem("admin")) || {};
+      setToken(Cookies.get("token"));
       setAdminDetails(adminData)
     } else {
-      
     }
   }, [Cookies])
 

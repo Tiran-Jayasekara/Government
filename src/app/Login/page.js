@@ -24,11 +24,12 @@ const Login = () => {
             setToken(adminData?.data?.token);
             localStorage.setItem("admin", JSON.stringify(adminData?.data?.checkAdmin));
 
-
-            if (adminData?.data?.checkAdmin?.company === "localCouncil" && adminData?.data?.checkAdmin?.role === "editor") {
-                setAdmin("localCouncil_editor")
-                router.push("/pages/government/pradeshiya_sabha")
-            } else if (adminData?.data?.checkAdmin?.company === "localCouncil") {
+            if (adminData?.data?.checkAdmin?.role === "editor") {
+                const companyName = adminData?.data?.checkAdmin?.company;
+                const adminRole = adminData?.data?.checkAdmin?.role;
+                setAdmin(companyName);
+                router.push(`/pages/government/${companyName}`)
+            } else {
                 router.push("/Profile")
             }
         } else {

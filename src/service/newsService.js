@@ -7,7 +7,7 @@ const newsService = () => {
     const { token } = useContext(GlobalContext);
 
     const http = axios.create({
-        baseURL: "http://localhost:3001",
+        baseURL: "http://192.168.1.185:3001",
         // process.env.REACT_APP_BASE_URL,
 
         headers: {
@@ -41,7 +41,7 @@ const newsService = () => {
     }
 
     const addNewNews = async (newsForm) => {
-
+        console.log(newsForm);
         try {
             const Addnews = await http.post("/news/addNews", newsForm);
             if (Addnews) {
